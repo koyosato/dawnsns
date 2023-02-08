@@ -23,6 +23,11 @@ class HomeController extends Controller
      */
     public function index()
     {
+        if (Auth::check()) {
+            $user = Auth::user();
+            $username = $user->name;
+            return var_dump($username);
+        }
         return view('home');
     }
 }

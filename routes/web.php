@@ -30,11 +30,26 @@ Route::get('/added', 'Auth\RegisterController@added');
 
 
 //ログイン中のページ
+
 Route::get('/top', 'PostsController@index');
 
-Route::get('/profile', 'UsersController@profile');
 
-Route::get('/search', 'UsersController@index');
+Route::get('/my-profile', 'UsersController@myProfile');
+Route::get('/profile/{id}', 'UsersController@profile');
+Route::get('/search', 'UsersController@search');
+Route::post('/search', 'UsersController@search');
+Route::get('/edit', 'UsersController@edit');
 
-Route::get('/follow-list', 'PostsController@index');
-Route::get('/follower-list', 'PostsController@index');
+
+
+
+Route::get('/follow-list', 'FollowsController@followList');
+Route::get('/follower-list', 'FollowsController@followerList');
+Route::post('/follow', 'FollowsController@create');
+Route::post('/unfollow', 'FollowsController@delete');
+
+Route::get('/post', 'PostsController@index')->name('posts.index');
+Route::post('/post', 'PostsController@store')->name('posts.store');
+
+
+Route::get('/logout', 'Auth\LoginController@logout');
