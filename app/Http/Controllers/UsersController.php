@@ -51,8 +51,14 @@ class UsersController extends Controller
         return view('users.search', ['users' => $users, 'follow' => $follow_ids]);
     }
 
-    public function edit()
+    public function profileUpdate(Request $request)
     {
-        return view('users.edit');
+        $user = Auth::user();
+        $user->username = $request->username;
+        $user->mail = $request->mail;
+        $user->password = $request->password;
+        $user->bio = $request->bio;
+
+        $user->save();
     }
 }

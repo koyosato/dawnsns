@@ -36,9 +36,11 @@ Route::get('/top', 'PostsController@index');
 
 Route::get('/my-profile', 'UsersController@myProfile');
 Route::get('/profile/{id}', 'UsersController@profile');
+
 Route::get('/search', 'UsersController@search');
 Route::post('/search', 'UsersController@search');
-Route::get('/edit', 'UsersController@edit');
+
+Route::patch('/profile-update', 'UsersController@update');
 
 
 
