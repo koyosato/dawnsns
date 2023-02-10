@@ -3,7 +3,7 @@
 @section('content')
 <div>
   <img src="{{ asset('images/' . $user->images) }}">
-  <form action="post">
+  <form action="patch">
     <label>Username</label>
     @csrf
     @method('PATCH')
@@ -20,7 +20,7 @@
     @csrf
     @method('PATCH')
     <input type="text" name="bio" value="{{ old('bio', $user->bio) }}">
-    <button><a href="/profile-update" method="patch">送信</a></button>
+    <button><a href="/profile-update">送信</a></button>
   </form>
 </div>
 

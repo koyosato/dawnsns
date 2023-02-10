@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use App\User;
 
 class UsersController extends Controller
@@ -51,14 +52,16 @@ class UsersController extends Controller
         return view('users.search', ['users' => $users, 'follow' => $follow_ids]);
     }
 
-    public function profileUpdate(Request $request)
+    public function update(Request $request)
     {
-        $user = Auth::user();
-        $user->username = $request->username;
-        $user->mail = $request->mail;
-        $user->password = $request->password;
-        $user->bio = $request->bio;
+        $request->validate([
+            'username' => ['required', 'string', 'min:4', 'max:12'],
+            'mail' => ['required', 'string', 'email', 'min:4', 'max:12'],
+            'password' => ['required', 'string', 'min:4', 'max:12']
+        ]);
 
-        $user->save();
+        $user = Auth::user();
+        $params = $request->all();
+        $user($params)->save();
     }
 }

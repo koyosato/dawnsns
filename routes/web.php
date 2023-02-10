@@ -40,7 +40,7 @@ Route::get('/profile/{id}', 'UsersController@profile');
 Route::get('/search', 'UsersController@search');
 Route::post('/search', 'UsersController@search');
 
-Route::patch('/profile-update', 'UsersController@update');
+Route::get('/profile-update', 'UsersController@update');
 
 
 
