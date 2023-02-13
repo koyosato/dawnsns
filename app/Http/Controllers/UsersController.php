@@ -54,14 +54,30 @@ class UsersController extends Controller
 
     public function update(Request $request)
     {
+        $user = Auth::user();
+        $user->username = $request->username;
+        $user->umail = $request->mail;
+        $user->password = $request->password;
+        $user->bio = $request->bio;
+
         $request->validate([
             'username' => ['required', 'string', 'min:4', 'max:12'],
             'mail' => ['required', 'string', 'email', 'min:4', 'max:12'],
-            'password' => ['required', 'string', 'min:4', 'max:12']
+            'password' => ['required', 'string', 'min:4', 'max:12'],
+            'bio' => ['string', 'max:200']
         ]);
 
-        $user = Auth::user();
-        $params = $request->all();
-        $user($params)->save();
+        DB::table('users')
+            ->where('id', Auth::id())
+            ->update(
+                [
+                    'username' => $user->username,
+                    'mail' => $user->umail,
+                    'password' => $user->password,
+                    'bio' => $user->bio
+                ]
+            );
+
+        return back();
     }
 }

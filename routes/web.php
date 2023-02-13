@@ -40,10 +40,7 @@ Route::get('/profile/{id}', 'UsersController@profile');
 Route::get('/search', 'UsersController@search');
 Route::post('/search', 'UsersController@search');
 
-Route::get('/profile-update', 'UsersController@update');
-
-
-
+Route::patch('/profile-update', 'UsersController@update');
 
 Route::get('/follow-list', 'FollowsController@followList');
 Route::get('/follower-list', 'FollowsController@followerList');

@@ -3,24 +3,24 @@
 @section('content')
 <div>
   <img src="{{ asset('images/' . $user->images) }}">
-  <form action="patch">
+  <form action="profile-update" method="POST">
     <label>Username</label>
     @csrf
     @method('PATCH')
-    <input type="text" name="name" value="{{ old('username', $user->username) }}">
+    <input type="text" name="username" value="{{ $user->username }}">
     <label>Mail</label>
     @csrf
     @method('PATCH')
-    <input type="mail" name="mail" value="{{ old('mail', $user->mail) }}">
+    <input type="mail" name="mail" value="{{ $user->mail }}">
     <label>Password</label>
     @csrf
     @method('PATCH')
-    <input type="text" name="password" value="{{ old('password', $user->password) }}">
+    <input type="text" name="password" value="{{ $user->password }}">
     <label>Bio</label>
     @csrf
     @method('PATCH')
-    <input type="text" name="bio" value="{{ old('bio', $user->bio) }}">
-    <button><a href="/profile-update">送信</a></button>
+    <input type="text" name="bio" value="{{ $user->bio }}">
+    <input type="submit" value="更新">
   </form>
 </div>
 
