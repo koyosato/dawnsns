@@ -54,29 +54,38 @@ class UsersController extends Controller
 
     public function update(Request $request)
     {
-        $user = Auth::user();
-        $user->username = $request->username;
-        $user->umail = $request->mail;
-        $user->password = $request->password;
-        $user->bio = $request->bio;
-
+        dd($request->input());
         $request->validate([
             'username' => ['required', 'string', 'min:4', 'max:12'],
             'mail' => ['required', 'string', 'email', 'min:4', 'max:12'],
-            'password' => ['required', 'string', 'min:4', 'max:12'],
+            'new_password' => ['required', 'string', 'min:4', 'max:50'],
             'bio' => ['string', 'max:200']
         ]);
+
 
         DB::table('users')
             ->where('id', Auth::id())
             ->update(
                 [
-                    'username' => $user->username,
-                    'mail' => $user->umail,
-                    'password' => $user->password,
-                    'bio' => $user->bio
+                    'username' => $request->username,
+                    'mail' => $request->mail,
+                    'bio' => $request->bio
                 ]
             );
+
+        if ($request->password !== $request->newpassword) {
+            $request->validate([
+                'new_password' => ['required', 'string', 'min:4', 'max:50']
+            ]);
+
+            DB::table('users')
+                ->where('id', Auth::id())
+                ->update(
+                    [
+                        'password' => ($request->new_password)
+                    ]
+                );
+        }
 
         return back();
     }
