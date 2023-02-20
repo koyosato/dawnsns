@@ -34,7 +34,7 @@
                         <li><a href="/logout">ログアウト</a></li>
                     </ul>
                 </div>
-                <p>{{ Auth::user()->username }}さん<a href="/top"><img src="images/arrow.png"></a></p>
+                <p>{{ Auth::user()->username }}さん</p>
             </div>
         </div>
     </header>

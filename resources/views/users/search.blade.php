@@ -10,8 +10,10 @@
   </div>
 </form>
 
-
 @foreach($users as $user)
+<div>
+  <img src="/storage/images/{{ $user->images }}" alt="" class="profile_image">
+</div>
 <div>
   {{$user->username}}
 </div>

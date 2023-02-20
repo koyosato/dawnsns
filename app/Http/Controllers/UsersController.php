@@ -23,7 +23,13 @@ class UsersController extends Controller
             ->where('follower', Auth::id())
             ->pluck('follow');
 
-        return view('users.profile', ['user' => $user, 'follow' => $follow_ids]);
+        $posts = DB::table('posts')
+            ->join('users', 'posts.user_id', '=', 'users.id')
+            ->where('posts.user_id', $id)
+            ->select('users.id', 'users.username', 'users.images', 'posts.posts', 'posts.created_at as created_at')
+            ->get();
+
+        return view('users.profile', ['user' => $user, 'follow' => $follow_ids, 'posts' => $posts]);
     }
 
     public function myProfile()
@@ -35,6 +41,7 @@ class UsersController extends Controller
 
     public function search(Request $request)
     {
+
         if ($request->isMethod('post')) {
             $keyword = $request->input('keyword');
             $users = DB::table('users')
@@ -49,18 +56,40 @@ class UsersController extends Controller
             ->where('follower', Auth::id())
             ->pluck('follow');
 
-        return view('users.search', ['users' => $users, 'follow' => $follow_ids]);
+        $user_icons = DB::table('users')
+            ->where('id', $follow_ids)
+            ->select('id', 'images')
+            ->get();
+
+        return view('users.search', ['users' => $users, 'follow' => $follow_ids, 'user_icons' => $user_icons]);
     }
 
     public function update(Request $request)
     {
-        dd($request->input());
         $request->validate([
             'username' => ['required', 'string', 'min:4', 'max:12'],
             'mail' => ['required', 'string', 'email', 'min:4', 'max:12'],
-            'new_password' => ['required', 'string', 'min:4', 'max:50'],
-            'bio' => ['string', 'max:200']
+            'bio' => ['nullable', 'string', 'max:200'],
+            'new_password' => ['nullable', 'string', 'min:4', 'max:50']
         ]);
+
+        if (request('new_password')) {
+            $newPassword = bcrypt($request->new_password);
+        } else {
+            $newPassword = DB::table('users')
+                ->where('id', Auth::id())
+                ->value('password');
+        }
+
+
+        if (request('image')) {
+            $image_name = $request->file('image')->getClientOriginalName();
+            $request->file('image')->storeAs('public/images', $image_name);
+        } else {
+            $image_name = DB::table('users')
+                ->where('id', Auth::id())
+                ->value('images');
+        }
 
 
         DB::table('users')
@@ -69,23 +98,11 @@ class UsersController extends Controller
                 [
                     'username' => $request->username,
                     'mail' => $request->mail,
-                    'bio' => $request->bio
+                    'bio' => $request->bio,
+                    'password' => $newPassword,
+                    'images' => $image_name
                 ]
             );
-
-        if ($request->password !== $request->newpassword) {
-            $request->validate([
-                'new_password' => ['required', 'string', 'min:4', 'max:50']
-            ]);
-
-            DB::table('users')
-                ->where('id', Auth::id())
-                ->update(
-                    [
-                        'password' => ($request->new_password)
-                    ]
-                );
-        }
 
         return back();
     }

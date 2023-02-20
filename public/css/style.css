@@ -20,3 +20,9 @@ header{
     flex: 0 0 19%;
     border-left: 1px solid #6C6C6C;
 }
+
+.profile_image {
+    border-radius: 50%;
+    width:  50px;
+    height: 50px;
+}

@@ -3,7 +3,7 @@
 @section('content')
 
 <div>
-  <img src="{{ asset('images/' . $user->images) }}">
+  <img src="{{ asset('storage/images/' . $user->images) }} " class="profile_image">
   {{$user->username}}
   {{$user->bio}}
 </div>
@@ -20,5 +20,12 @@
   <input type="submit" value="フォローする">
 </form>
 @endif
+
+@foreach($posts as $post)
+<div>
+  {{$post->posts}}
+  {{$post->created_at}}
+</div>
+@endforeach
 
 @endsection
