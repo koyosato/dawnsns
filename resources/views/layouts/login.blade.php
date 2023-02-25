@@ -62,7 +62,7 @@
     <footer>
     </footer>
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.3.min.js"></script>
-    <script src="/js/login.js"></script>
+    <script src="/js/script.js"></script>
 </body>
 
 </html>

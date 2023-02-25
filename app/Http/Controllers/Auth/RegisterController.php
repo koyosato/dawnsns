@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -99,12 +100,13 @@ class RegisterController extends Controller
             $data = $request->input();
             $this->validator($data)->validate();
             $this->create($data);
+            session()->put('username', $data['username']);
             return redirect('added');
         }
         return view('auth.register');
     }
 
-    public function added()
+    public function added(Request $request)
     {
         return view('auth.added');
     }
